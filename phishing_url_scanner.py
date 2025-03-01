@@ -8,14 +8,6 @@ import socket
 import ssl
 import requests
 
-# Function to check if a URL has suspicious keywords
-def has_suspicious_keywords(url):
-    suspicious_keywords = ['login', 'secure', 'account', 'banking', 'paypal', 'Paytm', 'update', 'verify']
-    for word in suspicious_keywords:
-        if word in url.lower():
-            return True
-    return False
-
 # Function to check the length of the URL
 def check_url_length(url):
     if len(url) > 75:  
@@ -26,6 +18,14 @@ def check_url_length(url):
 def check_misleading_characters(url):
     if "xn--" in url:  
         return True
+    return False
+
+# Function to check if a URL has suspicious keywords
+def has_suspicious_keywords(url):
+    suspicious_keywords = ['login', 'secure', 'account', 'banking', 'paypal', 'Paytm', 'update', 'verify']
+    for word in suspicious_keywords:
+        if word in url.lower():
+            return True
     return False
 
 # Function to check the domain registration date (newly registered domain can be suspicious)
@@ -168,7 +168,7 @@ def scan_url(url):
     if check_open_redirects(url):
         return "Suspicious: Open redirect detected."
     
-    return "Safe: URL looks normal."
+    return "Safe: URL looks like Normal."
 
 """
 Normal Links:
@@ -194,11 +194,11 @@ http://bankofamerica-security-alert.cc  - Fake banking website
 def check_url_button_click():
     url = url_entry.get()  
     if not url:
-        messagebox.showwarning("Input Error", "Please enter a URL.") 
+        messagebox.showwarning("Input Error", "Please enter a valid URL.") 
         return
     
     result = scan_url(url)  # Scan the URL
-    result_label.config(text=f"Result: {result}")  
+    result_label.config(text=f"{result}")  
 
 # Set up the GUI window with modern, clean design
 window = tk.Tk()
@@ -211,7 +211,7 @@ title_label = tk.Label(window, text="Phishing Link Scanner", font=("Helvetica", 
 title_label.pack(pady=20)
 
 # Instruction label
-instruction_label = tk.Label(window, text="Enter a URL to check if it is suspicious or safe:", font=("Arial", 12), bg="#f7f7f7")
+instruction_label = tk.Label(window, text="Please enter a link to check if it is suspicious or safe:", font=("Arial", 12), bg="#f7f7f7")
 instruction_label.pack(pady=10)
 
 # URL entry widget
@@ -219,7 +219,7 @@ url_entry = tk.Entry(window, width=50, font=("Arial", 12), bd=2, relief="solid")
 url_entry.pack(pady=10)
 
 # Button to trigger URL scan
-check_button = tk.Button(window, text="Check URL", command=check_url_button_click, font=("Arial", 12), bg="#4CAF50", fg="white", bd=0, relief="flat", padx=20, pady=10)
+check_button = tk.Button(window, text="Scan URL", command=check_url_button_click, font=("Arial", 12), bg="#4CAF50", fg="white", bd=0, relief="flat", padx=20, pady=10)
 check_button.pack(pady=20)
 
 # Label to display the scan result
